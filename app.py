@@ -439,6 +439,97 @@ if not df.empty:
 else:
 
     st.info("Start logging study sessions to see your dashboard.")
+
+
+# =====================================
+# DAILY STUDY HOURS
+# =====================================
+
+st.markdown("---")
+st.subheader("📅 Daily Study Hours")
+
+daily_df = df.copy()
+
+daily_df["Date"] = pd.to_datetime(
+    daily_df["Date"],
+    errors="coerce"
+)
+
+daily_df = daily_df.dropna(subset=["Date"])
+
+daily_hours = (
+    daily_df.groupby("Date", as_index=False)["Duration"]
+    .sum()
+    .sort_values("Date")
+)
+
+daily_hours["Date Label"] = daily_hours["Date"].dt.strftime("%d %b %Y")
+
+fig = px.bar(
+    daily_hours,
+    x="Date Label",
+    y="Duration",
+    text_auto=".1f",
+    title="Daily Study Hours"
+)
+
+fig.update_layout(
+    xaxis_title="Date",
+    yaxis_title="Study Hours",
+    xaxis=dict(type="category")
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+# =====================================
+# WEEKLY STUDY HOURS
+# =====================================
+
+st.markdown("---")
+st.subheader("📆 Weekly Study Hours")
+
+weekly_df = df.copy()
+
+weekly_df["Date"] = pd.to_datetime(
+    weekly_df["Date"],
+    errors="coerce"
+)
+
+weekly_df = weekly_df.dropna(subset=["Date"])
+
+# Monday of each week
+weekly_df["Week Start"] = (
+    weekly_df["Date"]
+    - pd.to_timedelta(weekly_df["Date"].dt.weekday, unit="D")
+)
+
+weekly_hours = (
+    weekly_df.groupby("Week Start", as_index=False)["Duration"]
+    .sum()
+    .sort_values("Week Start")
+)
+
+weekly_hours["Week"] = (
+    weekly_hours["Week Start"]
+    .dt.strftime("%d %b %Y")
+)
+
+fig = px.bar(
+    weekly_hours,
+    x="Week",
+    y="Duration",
+    text_auto=".1f",
+    title="Weekly Study Hours"
+)
+
+fig.update_layout(
+    xaxis_title="Week Starting",
+    yaxis_title="Study Hours",
+    xaxis=dict(type="category")
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
 # =====================================
 # ANALYTICS
 # =====================================
