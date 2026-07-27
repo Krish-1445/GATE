@@ -274,27 +274,7 @@ with st.form("study_form", clear_on_submit=True):
 
         st.rerun()
 
-# =====================================
-# QUICK PREVIEW
-# =====================================
 
-st.markdown("---")
-
-st.subheader("Recent Sessions")
-
-if len(df)==0:
-
-    st.info("No study sessions logged yet.")
-
-else:
-
-    preview = df.sort_values("Date",ascending=False)
-
-    st.dataframe(
-        preview.tail(10).iloc[::-1],
-        use_container_width=True,
-        hide_index=True
-    )
 # =====================================
 # DASHBOARD
 # =====================================
@@ -907,6 +887,27 @@ else:
     st.info("Not enough data.")
 st.markdown("---")
 
+# =====================================
+# QUICK PREVIEW
+# =====================================
+
+st.markdown("---")
+
+st.subheader("Recent Sessions")
+
+if len(df)==0:
+
+    st.info("No study sessions logged yet.")
+
+else:
+
+    preview = df.sort_values("Date",ascending=False)
+
+    st.dataframe(
+        preview.tail(10).iloc[::-1],
+        use_container_width=True,
+        hide_index=True
+    )
 st.caption(
 """
 GATE CSE Study Tracker
