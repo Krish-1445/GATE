@@ -1,0 +1,26 @@
+{
+    "gate_date": "2027-02-01",
+    "subjects": [
+        "Programming in C",
+        "Data Structures",
+        "Algorithms",
+        "Digital Logic",
+        "Computer Organization & Architecture",
+        "Operating Systems",
+        "Database Management Systems",
+        "Computer Networks",
+        "Theory of Computation",
+        "Compiler Design",
+        "Engineering Mathematics",
+        "Discrete Mathematics",
+        "General Aptitude"
+    ],
+    "activities": [
+        "Learning",
+        "Question Practice",
+        "PYQs",
+        "Revision",
+        "Mock Test",
+        "Error Analysis"
+    ]
+}
