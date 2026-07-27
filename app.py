@@ -756,65 +756,6 @@ if not df.empty:
 else:
 
     st.info("No data available.")
-
-
-# =====================================
-# DAILY SUMMARY
-# =====================================
-st.markdown("---")
-st.subheader("📅 Daily Study Hours")
-
-daily_hours = (
-    df.groupby("Date")["Duration"]
-    .sum()
-    .reset_index()
-)
-
-fig = px.bar(
-    daily_hours,
-    x="Date",
-    y="Duration",
-    title="Daily Study Hours",
-    text_auto=".1f"
-)
-
-fig.update_layout(
-    xaxis_title="Date",
-    yaxis_title="Hours"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-# =====================================
-# WEEKLY SUMMARY
-# =====================================
-st.markdown("---")
-st.subheader("🗓 Monthly Study Hours")
-
-monthly = df.copy()
-
-monthly["Month"] = monthly["Date"].dt.to_period("M").astype(str)
-
-monthly_hours = (
-    monthly.groupby("Month")["Duration"]
-    .sum()
-    .reset_index()
-)
-
-fig = px.bar(
-    monthly_hours,
-    x="Month",
-    y="Duration",
-    title="Monthly Study Hours",
-    text_auto=".1f"
-)
-
-fig.update_layout(
-    xaxis_title="Month",
-    yaxis_title="Hours"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-
 # =====================================
 # MONTHLY SUMMARY
 # =====================================
