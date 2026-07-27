@@ -273,7 +273,117 @@ with st.form("study_form", clear_on_submit=True):
         st.success("Study session saved.")
 
         st.rerun()
+# =====================================
+# DAILY STUDY TREND
+# =====================================
 
+st.markdown("---")
+st.subheader("📈 Daily Study Trend")
+
+trend = (
+    df.groupby("Date", as_index=False)["Duration"]
+    .sum()
+    .sort_values("Date")
+)
+
+fig = px.line(
+    trend,
+    x="Date",
+    y="Duration",
+    markers=True,
+    title="Daily Study Trend"
+)
+
+fig.update_xaxes(
+    tickformat="%d %b"
+)
+
+fig.update_layout(
+    xaxis_title="Date",
+    yaxis_title="Hours"
+)
+
+st.plotly_chart(fig, use_container_width=True)
+# =====================================
+# WEEKLY STUDY HOURS
+# =====================================
+
+st.markdown("---")
+st.subheader("📆 Weekly Study Hours")
+
+weekly = df.copy()
+
+weekly["Week"] = (
+    weekly["Date"]
+    .dt.to_period("W")
+    .astype(str)
+)
+
+weekly_hours = (
+    weekly.groupby("Week", as_index=False)["Duration"]
+    .sum()
+)
+
+fig = px.bar(
+    weekly_hours,
+    x="Week",
+    y="Duration",
+    text_auto=".1f",
+    title="Weekly Study Hours"
+)
+
+fig.update_layout(
+    xaxis_title="Week",
+    yaxis_title="Hours",
+    xaxis=dict(type="category")
+)
+
+st.plotly_chart(fig, use_container_width=True)
+# =====================================
+# MONTHLY STUDY HOURS
+# =====================================
+
+st.markdown("---")
+st.subheader("🗓 Monthly Study Hours")
+
+monthly = df.copy()
+
+monthly["Month"] = (
+    monthly["Date"]
+    .dt.to_period("M")
+    .dt.strftime("%b %Y")
+)
+
+monthly_hours = (
+    monthly.groupby("Month", as_index=False)["Duration"]
+    .sum()
+)
+
+fig = px.bar(
+    monthly_hours,
+    x="Month",
+    y="Duration",
+    text_auto=".1f",
+    title="Monthly Study Hours"
+)
+
+fig.update_layout(
+    xaxis_title="Month",
+    yaxis_title="Hours",
+    xaxis=dict(type="category")
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.dataframe(
+    monthly_hours.rename(
+        columns={
+            "Duration": "Hours"
+        }
+    ),
+    hide_index=True,
+    use_container_width=True
+)
 
 # =====================================
 # DASHBOARD
@@ -758,98 +868,7 @@ else:
     st.info("No data available.")
 
 
-# =====================================
-# DAILY SUMMARY
-# =====================================
-st.markdown("---")
-st.subheader("📅 Daily Study Hours")
 
-daily_hours = (
-    df.groupby("Date")["Duration"]
-    .sum()
-    .reset_index()
-)
-
-fig = px.bar(
-    daily_hours,
-    x="Date",
-    y="Duration",
-    title="Daily Study Hours",
-    text_auto=".1f"
-)
-
-fig.update_layout(
-    xaxis_title="Date",
-    yaxis_title="Hours"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-# =====================================
-# WEEKLY SUMMARY
-# =====================================
-st.markdown("---")
-st.subheader("🗓 Monthly Study Hours")
-
-monthly = df.copy()
-
-monthly["Month"] = monthly["Date"].dt.to_period("M").astype(str)
-
-monthly_hours = (
-    monthly.groupby("Month")["Duration"]
-    .sum()
-    .reset_index()
-)
-
-fig = px.bar(
-    monthly_hours,
-    x="Month",
-    y="Duration",
-    title="Monthly Study Hours",
-    text_auto=".1f"
-)
-
-fig.update_layout(
-    xaxis_title="Month",
-    yaxis_title="Hours"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-
-# =====================================
-# MONTHLY SUMMARY
-# =====================================
-
-st.markdown("---")
-st.header("📅 Monthly Summary")
-
-if not df.empty:
-
-    monthly = df.copy()
-
-    monthly["Month"] = monthly["Date"].dt.strftime("%b %Y")
-
-    monthly = (
-        monthly.groupby("Month")["Duration"]
-        .sum()
-        .reset_index()
-    )
-
-    fig = px.bar(
-        monthly,
-        x="Month",
-        y="Duration",
-        text_auto=".1f",
-        title="Monthly Study Hours"
-    )
-
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
-
-else:
-
-    st.info("No monthly data.")
 # =====================================
 # PERSONAL RECORDS
 # =====================================
