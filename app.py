@@ -405,7 +405,7 @@ if not df.empty:
         f"{streak} Days"
     )
 
-    row2 = st.columns(5)
+    row2 = st.columns(4)
 
     row2[0].metric(
         "Today's Hours",
@@ -425,11 +425,6 @@ if not df.empty:
     row2[3].metric(
         "Avg Daily Hours",
         f"{average_daily_hours:.2f}"
-    )
-    
-    row2[4].metric(
-        "Average Session",
-        f"{average_session:.2f} hrs"
     )
 
     row3 = st.columns(4)
