@@ -320,7 +320,20 @@ if not df.empty:
         df["Date"] >= this_month,
         "Duration"
     ].sum()
+# -------------------------
+# Average Daily Hours
+# -------------------------
 
+first_day = df["Date"].min().normalize()
+today = pd.Timestamp.today().normalize()
+
+days_since_start = (today - first_day).days + 1
+
+average_daily_hours = (
+    total_hours / days_since_start
+    if days_since_start > 0
+    else 0
+)
     # -------------------------
     # Questions
     # -------------------------
