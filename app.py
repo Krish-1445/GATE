@@ -207,14 +207,14 @@ with st.form("study_form", clear_on_submit=True):
 
     with col2:
 
-        end_time = st.time_input(
-            "End Time",
-            value=time(11,0)
-        )
-
         activity = st.selectbox(
             "Activity",
             activities
+        )
+        
+        end_time = st.time_input(
+            "End Time",
+            value=time(11,0)
         )
 
         correct = st.number_input(
